@@ -1,0 +1,36 @@
+/* Navbar.css */
+
+.navbar {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .navbar-toggler {
+    border: none;
+  }
+  
+  .navbar-light .navbar-toggler-icon {
+    background-color: #fff;
+  }
+  
+  .navbar-nav .nav-link {
+    color: #fff !important;
+    margin: 0 10px;
+  }
+  
+  .btn-light {
+    background-color: #fff;
+    color: #28a745;
+    border: 1px solid #28a745;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn-light:hover {
+    background-color: #d4edda;
+    color: #218838;
+  }
+  
