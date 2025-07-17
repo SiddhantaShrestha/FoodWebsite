@@ -1,21 +1,26 @@
-import React from "react";
-import Delete from "@material-ui/icons/Delete";
+"use client";
+import DeleteIcon from "@mui/icons-material/Delete"; // Corrected import for Delete icon
 import { useDispatchCart, useCart } from "../Components/ContextReducer";
 
 function Cart() {
-  let data = useCart();
-  let dispatch = useDispatchCart();
+  const data = useCart();
+  const dispatch = useDispatchCart();
+
   if (data.length === 0) {
     return (
-      <div>
-        <div className="m-5 w-100 text-center fs-3">The Cart is Empty!</div>
+      <div className="empty-cart-message">
+        <div className="empty-cart-icon">🛒</div>
+        <div className="empty-cart-text">Your Cart is Empty!</div>
+        <p className="empty-cart-subtext">
+          Start adding some delicious food to your order.
+        </p>
       </div>
     );
   }
 
   const handleCheckOut = async () => {
-    let userEmail = localStorage.getItem("userEmail");
-    let response = await fetch("http://localhost:5000/api/orderData", {
+    const userEmail = localStorage.getItem("userEmail");
+    const response = await fetch("http://localhost:5000/api/orderData", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -31,50 +36,48 @@ function Cart() {
       dispatch({ type: "DROP" });
     }
   };
-  let totalPrice = data.reduce((total, food) => total + food.price, 0);
+
+  const totalPrice = data.reduce((total, food) => total + food.price, 0);
+
   return (
-    <div>
-      <div className="container m-auto mt-5 table-responsive table-responsive-sm table-responsive-md">
-        <table className="table table-hover">
-          <thead className="text-success fs-4">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Option</th>
-              <th scope="col">Amount</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((food, index) => (
-              <tr>
-                <th scope="row">{index + 1}</th>
-                <td>{food.name}</td>
-                <td>{food.qty}</td>
-                <td>{food.size}</td>
-                <td>{food.price}</td>
-                <td>
-                  <button type="button" className="btn p-0">
-                    <Delete
-                      onClick={() => {
-                        dispatch({ type: "REMOVE", index: index });
-                      }}
-                    />
-                  </button>{" "}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div>
-          <h1 className="fs-2">Total Price: {totalPrice}/-</h1>
-        </div>
-        <div>
-          <button className="btn bg-success mt-5" onClick={handleCheckOut}>
-            Check Out
-          </button>
-        </div>
+    <div className="cart-container">
+      <h2 className="cart-title">Your Shopping Cart</h2>
+      <div className="cart-items-list">
+        {data.map((food, index) => (
+          <div key={index} className="cart-item-card">
+            <div className="item-details">
+              <img
+                src={food.img || "/placeholder.svg"}
+                alt={food.name}
+                className="item-image"
+              />
+              <div className="item-info">
+                <h3 className="item-name">{food.name}</h3>
+                <p className="item-options">
+                  Qty: <span className="item-qty">{food.qty}</span> | Size:{" "}
+                  <span className="item-size">{food.size}</span>
+                </p>
+                <p className="item-price">₹{food.price}/-</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="remove-item-btn"
+              onClick={() => {
+                dispatch({ type: "REMOVE", index: index });
+              }}
+            >
+              <DeleteIcon />
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <div className="cart-summary">
+        <h1 className="total-price">Total Price: ₹{totalPrice}/-</h1>
+        <button className="checkout-btn" onClick={handleCheckOut}>
+          Proceed to Checkout
+        </button>
       </div>
     </div>
   );

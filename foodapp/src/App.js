@@ -1,4 +1,5 @@
 import "./App.css";
+import "./styles/modern-styles.css"; // Add this line
 import Home from "./Screens/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Screens/Login";
